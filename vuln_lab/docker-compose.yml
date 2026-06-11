@@ -1,0 +1,50 @@
+# =============================================================================
+# SentinelForge — Vulnerable Lab (Docker Compose)
+# Spins up DVWA, Metasploitable2, and a Metasploit container for exploitation.
+# =============================================================================
+
+version: "3.9"
+
+services:
+  dvwa:
+    image: vulnerables/web-dvwa:latest
+    container_name: sentinel-dvwa
+    ports:
+      - "8081:80"
+    networks:
+      - vuln-net
+    restart: unless-stopped
+
+  metasploitable2:
+    image: tleemcjr/metasploitable2:latest
+    container_name: sentinel-metasploitable2
+    ports:
+      - "2222:22"
+      - "8082:80"
+      - "2121:21"
+      - "1524:1524"
+    networks:
+      - vuln-net
+    restart: unless-stopped
+
+  # Metasploit Framework for exploitation (used by tool_executor via docker exec)
+  msf:
+    image: metasploitframework/metasploit-framework:latest
+    container_name: sentinel-msf
+    networks:
+      - vuln-net
+    command: tail -f /dev/null
+    restart: unless-stopped
+
+  # Hydra for SSH brute-force (used by tool_executor via docker exec)
+  hydra:
+    image: vanhauser/hydra:latest
+    container_name: sentinel-hydra
+    networks:
+      - vuln-net
+    entrypoint: ["tail", "-f", "/dev/null"]
+    restart: unless-stopped
+
+networks:
+  vuln-net:
+    driver: bridge

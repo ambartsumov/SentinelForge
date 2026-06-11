@@ -1,0 +1,12 @@
+{
+  "dvwa": {
+    "ip": "sentinel-dvwa",
+    "description": "Damn Vulnerable Web Application",
+    "services": ["http:80"]
+  },
+  "metasploitable2": {
+    "ip": "sentinel-metasploitable2",
+    "description": "Metasploitable2 — intentionally vulnerable Linux VM",
+    "services": ["ftp:21", "ssh:22", "http:80", "bind_shell:1524"]
+  }
+}
